@@ -1,2 +1,4 @@
-# web-playground
-Playground for web technologies and website-related stuff
+playground
+==========
+
+A Symfony project created on October 27, 2016, 5:39 pm.
