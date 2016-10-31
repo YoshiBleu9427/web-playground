@@ -10,9 +10,7 @@ class UserController extends Controller implements ClassResourceInterface
 {
     public function cgetAction()
     {
-        // TODO return all Users
         $userRepo = $this->getDoctrine()->getRepository('AppBundle:User');
         return $userRepo->findAll();
-        return ["lol" => "lel"];
     }
 }

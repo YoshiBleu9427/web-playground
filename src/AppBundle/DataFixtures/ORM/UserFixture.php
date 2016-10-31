@@ -2,22 +2,41 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use AppBundle\Entity\User;
 
-class UserFixture extends AbstractFixture implements OrderedFixtureInterface
+class UserFixture extends AbstractFixture implements
+    OrderedFixtureInterface,
+    ContainerAwareInterface
 {
+
+     /**
+     * @var ContainerInterface
+     */
+    private $container;
+
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+    }
+
     public function load(ObjectManager $manager)
     {
-        $userAdmin = new User();
-        $userAdmin->setUsername('admin');
-        $userAdmin->setPassword('test');
-        $userAdmin->setEmail('admin@admin.com');
+        $userManager = $this->container->get('fos_user.user_manager');
 
-        $manager->persist($userAdmin);
-        $manager->flush();
+        $userAdmin = $userManager->createUser();
+
+        $userAdmin->setUsername('admin');
+        $userAdmin->setPlainPassword('test');
+        $userAdmin->setEmail('admin@admin.com');
+        $userAdmin->setRoles(array('ROLE_SUPER_ADMIN'));
+        $userAdmin->setEnabled(true);
+
+        $userManager->updateUser($userAdmin, true);
     }
 
     public function getOrder()
