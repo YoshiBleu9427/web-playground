@@ -19,6 +19,16 @@ gulp.task('sass', function () {
 });
 
 gulp.task('fonts', function () {
-    return gulp.src('./web/components/bootstrap-sass-official/assets/fonts/bootstrap/*')
+    return gulp.src('./web/components/bootstrap-sass/assets/fonts/bootstrap/*')
         .pipe(copy('./web/fonts', {prefix: 7}));
+});
+
+gulp.task('js', function() {
+    gulp.src([
+            './web/bundles/*/js/**/*.js',
+            './web/components/bootstrap-sass/assets/javascripts/**/*.js',
+            './web/components/jquery/dist/jquery.js',
+            './web/components/requirejs/require.js'
+        ])
+        .pipe(gulp.dest('./web/js'));
 });
